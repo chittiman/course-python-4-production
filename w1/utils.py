@@ -112,7 +112,34 @@ class DataReader:
         }
         """
     ######################################## YOUR CODE HERE ##################################################
+        #f = open(self.fp)
+        #headings_row = next(f)
+        #headings = headings_row.split(self._sep)
+        #Identifying the index of columns
+        #headings_indexes = {heading:col_num for col_num,heading in enumerate(headings) if heading in self._col_names}
+        fields = self._col_names
+        with open(self._fp) as f:
+            for i,line in enumerate(f):
+                
+                # if i < 1:#Skip headings line
+                #     headings = line.split(self._sep)
+                #     headings = [heading.strip() for heading in headings]
+                #     assert all((x==y for (x,y) in zip(headings,self._col_names,strict=True))) # Checks if identical headings and order
+                #     continue
+                # This is not needed as we are skipping first line wherever we use this
 
+                values = line.split(self._sep)
+                values = [value.strip() for value in values]
+                assert len(values) == len(fields)
+                
+                data = dict(zip(fields,values))
+                if i>0:
+                    data['UnitPrice'] = float(data['UnitPrice'])
+                    data['Quantity'] = int(data['Quantity'])
+                    data['TotalPrice'] = float(data['TotalPrice'])
+
+                yield data
+        
     ######################################## YOUR CODE HERE ##################################################
 
     def get_file_path(self):

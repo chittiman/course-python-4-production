@@ -79,5 +79,20 @@ class DataProcessor:
         aggregate should be 105.58
         """
         ######################################## YOUR CODE HERE ##################################################
+        # get generator from data_reader
+        data_reader_gen = (row for row in self.data_reader)
+
+        # skip first row as it is the column name
+        _ = next(data_reader_gen)
+
+        # key is the column name and value is the aggregate object
+        aggregate = {column_name:0}
+
+        # update stats as we iterate through the file
+        for row in tqdm(data_reader_gen):
+            aggregate[column_name] += row[column_name]
+
 
         ######################################## YOUR CODE HERE ##################################################
+
+        return aggregate
